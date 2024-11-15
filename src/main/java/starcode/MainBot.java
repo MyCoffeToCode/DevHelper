@@ -7,18 +7,29 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
+import starcode.listeners.EventListener;
 
-public class BotTest {
-    static Dotenv dotenv = Dotenv.load();
-    static String token = dotenv.get("TOKEN");
+public class MainBot {
+    private final Dotenv config; // Configurações do Dotenv
     
     private ShardManager shardManager; // ShardManager é uma classe que gerencia os shards do bot
 
-    public BotTest() throws LoginException {
+    public MainBot() throws LoginException {
+        config = Dotenv.load(); // Carrega o arquivo .env
+        String token = config.get("TOKEN"); // Pega o token do arquivo .env
+
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token); // Token do bot
-        builder.setStatus(OnlineStatus.ONLINE);  // Stus do bot
+        builder.setStatus(OnlineStatus.IDLE);  // Stus do bot
         builder.setActivity(Activity.playing("Digite /help")); // Atividade do bot
         shardManager = builder.build();
+
+        // Adiciona os listeners
+        shardManager.addEventListener(new EventListener());
+    }
+
+    // Retorna o Dotenv
+    public Dotenv getConfig() {
+        return config;
     }
     
     public ShardManager getShardManager() {
@@ -26,7 +37,7 @@ public class BotTest {
     }
     public static void main(String[] args) {
         try{
-            BotTest bot = new BotTest(); 
+            MainBot bot = new MainBot();
         } catch (LoginException e){
             System.out.println("ERROR: Provided bot token is invalid");
         }
