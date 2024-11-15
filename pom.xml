@@ -14,17 +14,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <!-- JDA Dependency -->
-        <dependency>
-            <groupId>net.dv8tion</groupId>
-            <artifactId>JDA</artifactId>
-            <version>5.0.0-beta.3</version>
-        </dependency>
-        <!-- Discord4J -->
+        <!-- https://mvnrepository.com/artifact/com.discord4j/discord4j-core -->
         <dependency>
             <groupId>com.discord4j</groupId>
             <artifactId>discord4j-core</artifactId>
-            <version>3.2.1</version>
+            <version>3.2.6</version>
         </dependency>
     </dependencies>
 </project>
