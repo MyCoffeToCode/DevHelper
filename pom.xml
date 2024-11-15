@@ -14,11 +14,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.discord4j/discord4j-core -->
         <dependency>
-            <groupId>com.discord4j</groupId>
-            <artifactId>discord4j-core</artifactId>
-            <version>3.2.6</version>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.dv8tion/JDA -->
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>5.2.1</version>
         </dependency>
     </dependencies>
 </project>
