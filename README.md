@@ -1,4 +1,4 @@
-# StarCode JavaBot
+# DevHelper // an Discord Java JDA Bot
 
 Este é um bot para Discord desenvolvido em Java utilizando a biblioteca Discord4J.
 
