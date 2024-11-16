@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import starcode.listeners.EmojiReaction;
+import starcode.listeners.MessageBan;
+import starcode.listeners.MessageUnbanning;
 
 public class MainBot {
     private final Dotenv config; // Configurações do Dotenv
@@ -25,6 +27,12 @@ public class MainBot {
 
         // Adiciona os listeners
         shardManager.addEventListener(new EmojiReaction());
+
+        // Adiciona o listener de banimento
+        shardManager.addEventListener(new MessageBan());
+
+        // Adiciona o listener de desbanimento
+        shardManager.addEventListener(new MessageUnbanning());
     }
 
     // Retorna o Dotenv
