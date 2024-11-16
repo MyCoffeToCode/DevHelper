@@ -1,6 +1,6 @@
 # DevHelper // an Discord Java JDA Bot
 
-Este é um bot para Discord desenvolvido em Java utilizando a biblioteca Discord4J.
+Este é um bot para Discord desenvolvido em Java utilizando a biblioteca JDA para o servidor de programação Star Code como forma de ajudar novos programadores com exercicios e um ponto de partida para estudar.
 
 ## Requisitos
 
