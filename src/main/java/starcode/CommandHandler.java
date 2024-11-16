@@ -11,9 +11,9 @@ public class CommandHandler {
 
     public CommandHandler(){
         registerCommand(new PingCommand()); // salva o comando !ping e chama PingCommand
-    } 
+    }
     public void registerCommand(PingCommand command){
-            commands.put(command.getCommandName(), PingCommand); 
+        commands.put(command.getCommandName(), command);
     }
     public void handleCommand(MessageReceivedEvent event){
         String message = event.getMessage().getContentRaw();

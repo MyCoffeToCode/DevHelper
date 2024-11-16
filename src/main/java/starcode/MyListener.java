@@ -9,7 +9,7 @@ public class MyListener extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
         commandHandler.handleCommand(event);
-    
+
     }
 
 }
