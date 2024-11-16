@@ -7,15 +7,13 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
-import starcode.listeners.EmojiReaction;
-import starcode.listeners.MessageBan;
-import starcode.listeners.MessageUnbanning;
+import starcode.listeners.Logs;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 public class MainBot {
     private final Dotenv config; // Configurações do Dotenv
     
     private ShardManager shardManager; // ShardManager é uma classe que gerencia os shards do bot
-
     public MainBot() throws LoginException {
         config = Dotenv.load(); // Carrega o arquivo .env
         String token = config.get("TOKEN"); // Pega o token do arquivo .env
@@ -23,16 +21,12 @@ public class MainBot {
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token); // Token do bot
         builder.setStatus(OnlineStatus.IDLE);  // Stus do bot
         builder.setActivity(Activity.playing("Digite /help")); // Atividade do bot
+        builder.enableIntents(GatewayIntent.MESSAGE_CONTENT); // Adiciona a intenção MESSAGE_CONTENT
         shardManager = builder.build();
 
+
         // Adiciona os listeners
-        shardManager.addEventListener(new EmojiReaction());
-
-        // Adiciona o listener de banimento
-        shardManager.addEventListener(new MessageBan());
-
-        // Adiciona o listener de desbanimento
-        shardManager.addEventListener(new MessageUnbanning());
+        shardManager.addEventListener(new Logs());
     }
 
     // Retorna o Dotenv
