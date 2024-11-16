@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
-import starcode.listeners.EventListener;
+import starcode.listeners.EmojiReaction;
 
 public class MainBot {
     private final Dotenv config; // Configurações do Dotenv
@@ -24,7 +24,7 @@ public class MainBot {
         shardManager = builder.build();
 
         // Adiciona os listeners
-        shardManager.addEventListener(new EventListener());
+        shardManager.addEventListener(new EmojiReaction());
     }
 
     // Retorna o Dotenv
