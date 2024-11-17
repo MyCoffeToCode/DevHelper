@@ -12,9 +12,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
 
-public class Logs extends ListenerAdapter {
+public class LogsListener extends ListenerAdapter {
     private final Map<String, String> messageCache = new ConcurrentHashMap<>();
 
     @Override
