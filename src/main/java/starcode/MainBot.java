@@ -10,8 +10,9 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import starcode.commands.CommandHelp;
 import starcode.listeners.SlashCommandListener;
-import starcode.listeners.Logs;
+import starcode.listeners.LogsListener;
 
 public class MainBot extends ListenerAdapter {
     private final Dotenv config; // Configurações do Dotenv
@@ -35,8 +36,10 @@ public class MainBot extends ListenerAdapter {
         this.shardManager = builder.build();
 
         // Adiciona os listeners
-        shardManager.addEventListener(new Logs());
+        shardManager.addEventListener(new LogsListener());
         shardManager.addEventListener(new SlashCommandListener());
+        shardManager.addEventListener(new CommandHelp()); // Adiciona o listener CommandHelp
+
 
         // Registra os comandos do bot
         shardManager.getShards().forEach(shard -> shard.updateCommands().addCommands(
@@ -44,16 +47,6 @@ public class MainBot extends ListenerAdapter {
                 Commands.slash("help", "Mostra a lista de comandos"),
                 Commands.slash("bump", "Bumpa o servidor")
         ).queue());
-    }
-
-    // Retorna o Dotenv
-    public Dotenv getConfig() {
-        return config;
-    }
-
-    // Retorna o ShardManager
-    public ShardManager getShardManager() {
-        return shardManager;
     }
 
     public static void main(String[] args) {

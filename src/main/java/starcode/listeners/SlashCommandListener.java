@@ -16,8 +16,6 @@ public class SlashCommandListener extends ListenerAdapter {
             CommandPing.ping(event);
         } else if (event.getName().equals("help")) {
             CommandHelp.help(event);
-        } else if (event.getName().equals("bump")) {
-            event.reply("/bump").queue();
         }
     }
 }
