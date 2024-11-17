@@ -90,7 +90,6 @@ public class Logs extends ListenerAdapter {
                 .addField("Link da Mensagem", jumpLink, false)
                 .setColor(0x65D8C5) // Cor verde
                 .build();
-        String message = user.getAsMention() + " reagiu com " + emoji + " no canal " + channelMention + " no link " + jumpLink; // Mensagem
         event.getGuild().getTextChannelById("1124423573994479737").sendMessageEmbeds(embed).queue(); // Envia a mensagem
     }
 }
