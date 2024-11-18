@@ -2,7 +2,10 @@ package DevHelper;
 
 import javax.security.auth.login.LoginException;
 
+import DevHelper.Commands.CodeCommand;
 import DevHelper.Commands.FunCommand.MemeCommand;
+import DevHelper.Commands.commandhelp;
+import DevHelper.Listeners.MenuInteractionListener;
 import DevHelper.Listeners.RegisterListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -24,6 +27,7 @@ public class MainBot extends ListenerAdapter {
         // Inicializa o Dotenv e pega o token
         this.config = Dotenv.load();
         String token = config.get("TOKEN");
+        CommandManager commandManager = new CommandManager();
         if (token == null || token.isEmpty()) {
             throw new IllegalArgumentException("ERROR: Token do bot não encontrado no arquivo .env!");
         }
@@ -37,11 +41,14 @@ public class MainBot extends ListenerAdapter {
         // Inicializa o ShardManager
         this.shardManager = builder.build();
 
+        // Registra os comandos
+        commandManager.registerCommand(new commandhelp());
+        commandManager.registerCommand(new CodeCommand());
+
         // Adiciona os listeners
         shardManager.addEventListener(new LogsListener());
+        shardManager.addEventListener(new MenuInteractionListener());
         shardManager.addEventListener(new RegisterListener());
-        shardManager.addEventListener(new SlashCommandListener());
-        shardManager.addEventListener(new CommandHelp()); // Adiciona o listener CommandHelp
         shardManager.addEventListener(new MemeCommand());
 
         // Registra os comandos do bot
