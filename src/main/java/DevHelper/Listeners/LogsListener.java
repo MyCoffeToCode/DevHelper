@@ -94,7 +94,7 @@ public class LogsListener extends ListenerAdapter {
                     .setTimestamp(java.time.OffsetDateTime.now().withNano(0).withSecond(0))
                     .build();
 
-            event.getGuild().getTextChannelById("1307044379235713084").sendMessageEmbeds(embed).queue();
+            event.getGuild().getTextChannelById("1124423573994479737").sendMessageEmbeds(embed).queue();
         }
 
         if(event.getChannelLeft() != null){
@@ -108,7 +108,7 @@ public class LogsListener extends ListenerAdapter {
                     .setTimestamp(java.time.OffsetDateTime.now().withNano(0).withSecond(0))
                     .build();
 
-            event.getGuild().getTextChannelById("1307044379235713084").sendMessageEmbeds(embed).queue();
+            event.getGuild().getTextChannelById("1124423573994479737").sendMessageEmbeds(embed).queue();
         }
     }
 }
