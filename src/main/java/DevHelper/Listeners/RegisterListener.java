@@ -23,6 +23,14 @@ public class RegisterListener extends ListenerAdapter {
     @Override
     public void onReady(@NotNull ReadyEvent event){
 
+        /*
+        *
+        * @Author OyakXD
+        *
+        *  Aqui o código iŕa enviar uma mensagem de boas vindas no canal de texto escolhido do servidor
+        *  e também verifica se o canal e o servidor existem. Logo ele criará a mensagem de boas vindas.
+        *
+        * */
         Guild guild = event.getJDA().getGuildById("1120887160288051211");
         if(guild == null) return;
 
@@ -46,6 +54,13 @@ public class RegisterListener extends ListenerAdapter {
                 .queue();
 
     }
+
+    /*
+    *
+    * Nessa seção do código, o bot irá criar um menu de seleção para que o usuário possa escolher
+    * no caso eu fiz duas opções, uma para escolher a área de atuação e outra para escolher as stacks
+    *
+    * */
 
     private StringSelectMenu createAreaMenu() {
         return StringSelectMenu.create("menu-areas")
@@ -77,6 +92,12 @@ public class RegisterListener extends ListenerAdapter {
                 .build();
     }
 
+    /*
+    *
+    * Nessa parte do codigo, o bot irá verificar se o usuário selecionou as opções corretas
+    *
+    * */
+
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         if(event.getComponentId().equals("menu-areas") || event.getComponentId().equals("menu-stack")){
@@ -88,16 +109,20 @@ public class RegisterListener extends ListenerAdapter {
         Guild guild = event.getGuild();
         Member member = event.getMember();
 
+        // Verifica se o servidor é nulo ou o membro é nulo
         if (guild == null || member == null) {
             event.getHook().sendMessage("Ocorreu um erro.").setEphemeral(true).queue();
             return;
         }
 
+        // Defer reply para evitar timeout
         event.deferReply(true).queue();
 
+        // Aqui ele cria uma lista de cargos que o bot irá verificar, das duas opções de menu.
         List<String> areaRoles = List.of("front-end", "back-end", "mobile", "full-stack");
         List<String> stackRoles = List.of("java", "javascript", "python", "csharp", "cpp", "html", "css", "go", "php", "ruby", "kotlin", "angular", "typescript");
 
+        // Aqui ele cria um mapa de cargos, onde ele irá verificar se o cargo existe no servidor
         Map<String, Role> roleMap = new HashMap<>();
         for (String roleName : areaRoles) {
             Role role = guild.getRolesByName(roleName, true).stream().findFirst().orElse(null);
@@ -115,6 +140,7 @@ public class RegisterListener extends ListenerAdapter {
         StringBuilder response = new StringBuilder();
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
+        // Nesse for ele irá verificar se o cargo existe no servidor, se existir ele irá adicionar ou remover o cargo do usuário
         for (String roleName : selectedRoles) {
             Role role = roleMap.get(roleName);
             if (role != null) {
@@ -126,8 +152,10 @@ public class RegisterListener extends ListenerAdapter {
             }
         }
 
+        // Nessa parte do código ele irá verificar se o cargo foi atribuído ou removido, e irá enviar uma mensagem para o usuário
+        // Esse CompletableFuture é para esperar todas as operações de adicionar/remover cargos serem completadas
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).thenRun(() -> {
-            if (response.length() > 0) {
+            if (!response.isEmpty()) {
                 event.getHook().sendMessage(response.toString()).setEphemeral(true).queue();
             } else {
                 event.getHook().sendMessage("Nenhuma alteração de cargo foi feita.").setEphemeral(true).queue();
@@ -135,6 +163,7 @@ public class RegisterListener extends ListenerAdapter {
         });
     }
 
+    // Essa função irá adicionar o cargo ao usuário
     private CompletableFuture<Void> addRoleToMember(Guild guild, Member member, Role role, StringBuilder response) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         guild.addRoleToMember(member, role).queue(
@@ -150,6 +179,7 @@ public class RegisterListener extends ListenerAdapter {
         return future;
     }
 
+    // E nessa irá remover
     private CompletableFuture<Void> removeRoleFromMember(Guild guild, Member member, Role role, StringBuilder response) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         guild.removeRoleFromMember(member, role).queue(
