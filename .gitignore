@@ -11,6 +11,10 @@ target/
 *.iws
 *.iml
 *.ipr
+*.env
+*.idea/discord.xml
+*.target/
+.idea/misc.xml
 
 ### Eclipse ###
 .apt_generated

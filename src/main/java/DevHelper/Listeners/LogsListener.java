@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.guild.GuildBanEvent;
 import net.dv8tion.jda.api.events.guild.GuildUnbanEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -73,5 +74,41 @@ public class LogsListener extends ListenerAdapter {
                     .build();
             event.getGuild().getTextChannelById("1124423573994479737").sendMessageEmbeds(embed).queue();
         });
+    }
+
+    /*
+    * @Author OyakXD
+    *  Logs de entrar e sair de um canal de voz.
+    * */
+    @Override
+    public void onGuildVoiceUpdate(@NotNull GuildVoiceUpdateEvent event) {
+
+        if(event.getChannelJoined() != null){
+            String userMention = event.getMember().getAsMention();
+            String channelMention = event.getChannelJoined().getAsMention();
+
+            MessageEmbed embed = new EmbedBuilder()
+                    .setTitle("Entrada em um canal de voz")
+                    .setDescription(userMention + " Entrou no canal de voz " + channelMention)
+                    .setColor(0x00FF00)
+                    .setTimestamp(java.time.OffsetDateTime.now().withNano(0).withSecond(0))
+                    .build();
+
+            event.getGuild().getTextChannelById("1307044379235713084").sendMessageEmbeds(embed).queue();
+        }
+
+        if(event.getChannelLeft() != null){
+            String userMention = event.getMember().getAsMention();
+            String channelMention = event.getChannelLeft().getAsMention();
+
+            MessageEmbed embed = new EmbedBuilder()
+                    .setTitle("Saída de um canal de voz")
+                    .setDescription(userMention + " Saiu do canal de voz " + channelMention)
+                    .setColor(0x00FF00)
+                    .setTimestamp(java.time.OffsetDateTime.now().withNano(0).withSecond(0))
+                    .build();
+
+            event.getGuild().getTextChannelById("1307044379235713084").sendMessageEmbeds(embed).queue();
+        }
     }
 }
