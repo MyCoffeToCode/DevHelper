@@ -3,6 +3,7 @@ package DevHelper;
 import javax.security.auth.login.LoginException;
 
 import DevHelper.Commands.FunCommand.MemeCommand;
+import DevHelper.Listeners.RegisterListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -38,6 +39,7 @@ public class MainBot extends ListenerAdapter {
 
         // Adiciona os listeners
         shardManager.addEventListener(new LogsListener());
+        shardManager.addEventListener(new RegisterListener());
         shardManager.addEventListener(new SlashCommandListener());
         shardManager.addEventListener(new CommandHelp()); // Adiciona o listener CommandHelp
         shardManager.addEventListener(new MemeCommand());

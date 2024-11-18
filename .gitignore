@@ -14,7 +14,6 @@ target/
 *.env
 *.idea/discord.xml
 *.target/
-.idea/misc.xml
 
 ### Eclipse ###
 .apt_generated
