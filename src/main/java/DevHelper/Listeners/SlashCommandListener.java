@@ -1,8 +1,10 @@
-package starcode.listeners;
+package DevHelper.Listeners;
+import DevHelper.Commands.FunCommand.MemeCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import starcode.commands.CommandHelp;
-import starcode.commands.CommandPing;
+import DevHelper.Commands.CommandHelp;
+import DevHelper.Commands.CommandPing;
+import java.io.IOException;
 
 public class SlashCommandListener extends ListenerAdapter {
     @Override
@@ -16,6 +18,13 @@ public class SlashCommandListener extends ListenerAdapter {
             CommandPing.ping(event);
         } else if (event.getName().equals("help")) {
             CommandHelp.help(event);
+        } else if (event.getName().equals("meme")){
+            try {
+                MemeCommand.meme(event);
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Adicione aqui qualquer tratamento adicional que você queira fazer
+            }
         }
     }
 }

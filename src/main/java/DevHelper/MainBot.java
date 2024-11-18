@@ -1,7 +1,8 @@
-package starcode;
+package DevHelper;
 
 import javax.security.auth.login.LoginException;
 
+import DevHelper.Commands.FunCommand.MemeCommand;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -10,9 +11,9 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import starcode.commands.CommandHelp;
-import starcode.listeners.SlashCommandListener;
-import starcode.listeners.LogsListener;
+import DevHelper.Commands.CommandHelp;
+import DevHelper.Listeners.SlashCommandListener;
+import DevHelper.Listeners.LogsListener;
 
 public class MainBot extends ListenerAdapter {
     private final Dotenv config; // Configurações do Dotenv
@@ -39,13 +40,13 @@ public class MainBot extends ListenerAdapter {
         shardManager.addEventListener(new LogsListener());
         shardManager.addEventListener(new SlashCommandListener());
         shardManager.addEventListener(new CommandHelp()); // Adiciona o listener CommandHelp
-
+        shardManager.addEventListener(new MemeCommand());
 
         // Registra os comandos do bot
         shardManager.getShards().forEach(shard -> shard.updateCommands().addCommands(
                 Commands.slash("ping", "Responde com pong!"),
                 Commands.slash("help", "Mostra a lista de comandos"),
-                Commands.slash("bump", "Bumpa o servidor")
+                Commands.slash("meme", "Mostra memes aleatorios")
         ).queue());
     }
 
