@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -44,7 +45,7 @@ public class RegisterListener extends ListenerAdapter {
                 .setColor(new Color(128,0,255))
                 .setThumbnail("https://media.discordapp.net/attachments/1308098418975182948/1308098747376336926/AlbedoBase_XL_A_minimalist_logo_design_that_represents_coding_2_1.jpg?ex=673cb564&is=673b63e4&hm=a0dcb0fbb4ecd43cc8619a37de3b267f36b4e78d65f88f31cd5065740a223d3c&=&format=webp&width=586&height=586")
                 .addField("🔧 Cargos", "Para adicionar cargos, clique nos menus abaixo.", false)
-                .addField("Stacks", "Selecione as stacks que você trabalha.", false)
+                .addField("\uD83D\uDCBC  Stacks", "Selecione as stacks que você trabalha.", false)
                 .build();
         channel.sendMessageEmbeds(embed)
                 .setComponents(
@@ -75,19 +76,19 @@ public class RegisterListener extends ListenerAdapter {
     private StringSelectMenu createStackMenu(){
         return StringSelectMenu.create("menu-stack")
                 .setPlaceholder("Selecione suas stacks")
-                .addOption("Java", "java")
-                .addOption("JavaScript", "javascript")
-                .addOption("Python", "python")
-                .addOption("C#", "csharp")
-                .addOption("C++", "cpp")
-                .addOption("HTML", "html")
-                .addOption("CSS", "css")
-                .addOption("GO", "go")
-                .addOption("PHP", "php")
-                .addOption("Ruby", "ruby")
-                .addOption("Kotlin", "kotlin")
-                .addOption("Angular", "angular")
-                .addOption("Typescript", "typescript")
+                .addOption("Java", "java",  "", Emoji.fromCustom("java", 1299842354190225419L, false))
+                .addOption("JavaScript", "javascript", "", Emoji.fromCustom("javascript", 1299842348469059674L, false))
+                .addOption("Python", "python", "", Emoji.fromCustom("python", 1299845020429324308L, false))
+                .addOption("C#", "csharp", "",  Emoji.fromCustom("csharp", 1299842356215943310L, false ))
+                .addOption("C++", "cpp", "", Emoji.fromCustom("cpp", 1299842357977551049L, false))
+                .addOption("GO", "go", "", Emoji.fromCustom("go", 1299842339761684520L, false))
+                .addOption("PHP", "php", "", Emoji.fromCustom("php", 1299842342081269862L, false))
+                .addOption("Ruby", "ruby", "", Emoji.fromCustom("ruby", 1299842369310691390L, false))
+                .addOption("Kotlin", "kotlin", "", Emoji.fromCustom("kotlin", 1299842364017479742L, false))
+                .addOption("Angular", "angular", "", Emoji.fromCustom("angular", 1299781275980140554L, false))
+                .addOption("Typescript", "typescript", "", Emoji.fromCustom("typescript", 1299842344753037442L, false))
+                .addOption("ReactJs", "reactjs", "", Emoji.fromCustom("reactjs", 1299842366848499792L, false))
+                .addOption("NodeJS", "nodejs", "", Emoji.fromCustom("nodejs", 1299842352961028106L, false))
                 .setMinValues(1)
                 .build();
     }
@@ -120,7 +121,7 @@ public class RegisterListener extends ListenerAdapter {
 
         // Aqui ele cria uma lista de cargos que o bot irá verificar, das duas opções de menu.
         List<String> areaRoles = List.of("front-end", "back-end", "mobile", "full-stack");
-        List<String> stackRoles = List.of("java", "javascript", "python", "csharp", "cpp", "html", "css", "go", "php", "ruby", "kotlin", "angular", "typescript");
+        List<String> stackRoles = List.of("java", "javascript", "python", "csharp", "cpp", "html", "css", "go", "php", "ruby", "kotlin", "angular", "typescript", "reactjs", "nodejs");
 
         // Aqui ele cria um mapa de cargos, onde ele irá verificar se o cargo existe no servidor
         Map<String, Role> roleMap = new HashMap<>();
