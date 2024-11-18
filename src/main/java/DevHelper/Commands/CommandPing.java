@@ -1,4 +1,4 @@
-package starcode.commands;
+package DevHelper.Commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
