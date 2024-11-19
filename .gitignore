@@ -39,3 +39,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Ignorar arquivo de configuração de tokens
+.env
