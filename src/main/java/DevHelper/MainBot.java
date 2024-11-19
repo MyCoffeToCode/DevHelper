@@ -3,60 +3,84 @@ package DevHelper;
 import javax.security.auth.login.LoginException;
 
 import DevHelper.Commands.CodeCommand;
-import DevHelper.Commands.FunCommand.MemeCommand;
-import DevHelper.Commands.commandhelp;
-import DevHelper.Listeners.MenuInteractionListener;
+import DevHelper.Commands.CommandHelp;
+import DevHelper.Commands.CommandPing;
 import DevHelper.Listeners.RegisterListener;
 import io.github.cdimascio.dotenv.Dotenv;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
-import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import DevHelper.Commands.CommandHelp;
-import DevHelper.Listeners.SlashCommandListener;
 import DevHelper.Listeners.LogsListener;
+import DevHelper.Listeners.HelpInteractionListener;
 
 public class MainBot extends ListenerAdapter {
     private final Dotenv config; // Configurações do Dotenv
-    private final ShardManager shardManager; // ShardManager é uma classe que gerencia os shards do bot
+    private final CommandManager commandManager; // Gerenciador de comandos
+    private final JDA jda; // Instância principal do bot
 
     public MainBot() throws LoginException {
         // Inicializa o Dotenv e pega o token
         this.config = Dotenv.load();
         String token = config.get("TOKEN");
-        CommandManager commandManager = new CommandManager();
+
         if (token == null || token.isEmpty()) {
             throw new IllegalArgumentException("ERROR: Token do bot não encontrado no arquivo .env!");
         }
 
-        // Configura o bot com o token
-        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
-        builder.setStatus(OnlineStatus.IDLE); // Status inicial
+        // Inicializa o CommandManager
+        this.commandManager = new CommandManager();
+        registerCommands(); // Registra os comandos no CommandManager
+
+        // Configura o bot
+        JDABuilder builder = JDABuilder.createDefault(token);
+        builder.setStatus(OnlineStatus.IDLE); // Define status inicial
         builder.setActivity(Activity.playing("Digite /help")); // Atividade do bot
-        builder.enableIntents(GatewayIntent.MESSAGE_CONTENT); // Permite ler conteúdo das mensagens
+        builder.enableIntents(GatewayIntent.MESSAGE_CONTENT); // Permite ler o conteúdo das mensagens
 
-        // Inicializa o ShardManager
-        this.shardManager = builder.build();
+        // Registra os listeners
+        registerListeners(builder);
 
-        // Registra os comandos
-        commandManager.registerCommand(new commandhelp());
+        // Constrói o bot
+        this.jda = builder.build();
+
+        // Sincroniza os comandos com o Discord
+        syncCommands();
+    }
+
+    private void registerCommands() {
+        // Registra os comandos no CommandManager
+        commandManager.registerCommand(new CommandHelp());
         commandManager.registerCommand(new CodeCommand());
+        commandManager.registerCommand(new CommandPing());
+    }
 
-        // Adiciona os listeners
-        shardManager.addEventListener(new LogsListener());
-        shardManager.addEventListener(new MenuInteractionListener());
-        shardManager.addEventListener(new RegisterListener());
-        shardManager.addEventListener(new MemeCommand());
+    private void registerListeners(JDABuilder builder) {
+        // Registra os listeners no builder
+        builder.addEventListeners(
+                this, // Registra a própria classe como Listener
+                new LogsListener(),
+                new HelpInteractionListener(),
+                new RegisterListener()
+        );
+    }
 
-        // Registra os comandos do bot
-        shardManager.getShards().forEach(shard -> shard.updateCommands().addCommands(
-                Commands.slash("ping", "Responde com pong!"),
-                Commands.slash("help", "Mostra a lista de comandos"),
-                Commands.slash("meme", "Mostra memes aleatorios")
-        ).queue());
+    private void syncCommands() {
+        // Sincroniza os comandos dinamicamente com base no CommandManager
+        jda.updateCommands().addCommands(
+                commandManager.getCommands().stream()
+                        .map(command -> Commands.slash(command.getName(), command.getDescription()))
+                        .toList()
+        ).queue();
+    }
+
+    @Override
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        commandManager.handleCommand(event); // Processa o comando
     }
 
     public static void main(String[] args) {

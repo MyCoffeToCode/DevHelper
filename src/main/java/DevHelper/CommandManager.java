@@ -3,11 +3,13 @@ package DevHelper;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CommandManager {
-    private final Map<String, ICommand> commands = new HashMap<>();
+    private final List<ICommand> commands = new ArrayList<>();
 
     /**
     *
@@ -17,18 +19,17 @@ public class CommandManager {
     * */
 
     public void registerCommand(ICommand command){
-        commands.put(command.getName(), command);
+        commands.add(command);
     }
 
     /**
      * Obtém um comando pelo nome.
      *
-     * @param name O nome do comando.
      * @return O comando correspondente, ou null se não existir.
      */
 
-    public ICommand getCommand(String name){
-        return commands.get(name);
+    public List<ICommand> getCommands(){
+        return commands;
     }
 
     /**
@@ -38,9 +39,19 @@ public class CommandManager {
      */
 
     public void handleCommand(SlashCommandInteractionEvent event){
-        ICommand command = commands.get(event.getName());
-        if(command != null) {
-            command.execute(event);
+        String commandName = event.getName(); // Nome do comando executado
+        ICommand foundCommand = null;
+
+        // Busca o comando correspondente na lista
+        for (ICommand command : commands) {
+            if (command.getName().equalsIgnoreCase(commandName)) {
+                foundCommand = command;
+                break;
+            }
+        }
+        // Executa o comando ou responde com erro
+        if (foundCommand != null) {
+            foundCommand.execute(event);
         } else {
             event.reply("Comando não encontrado!").setEphemeral(true).queue();
         }
