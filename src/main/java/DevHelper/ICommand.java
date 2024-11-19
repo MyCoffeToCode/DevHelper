@@ -2,6 +2,8 @@ package DevHelper;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
+import java.io.IOException;
+
 public interface ICommand {
 
     /**
@@ -24,5 +26,5 @@ public interface ICommand {
     *   @param event o Evento que contém as informações do comando
     * */
 
-    void execute(SlashCommandInteractionEvent event);
+    void execute(SlashCommandInteractionEvent event) throws IOException;
 }

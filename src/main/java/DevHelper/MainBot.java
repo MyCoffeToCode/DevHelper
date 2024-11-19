@@ -15,7 +15,6 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import DevHelper.Commands.CommandHelp;
 import DevHelper.Listeners.SlashCommandListener;
 import DevHelper.Listeners.LogsListener;
 
@@ -44,6 +43,7 @@ public class MainBot extends ListenerAdapter {
         // Registra os comandos
         commandManager.registerCommand(new commandhelp());
         commandManager.registerCommand(new CodeCommand());
+        command
 
         // Adiciona os listeners
         shardManager.addEventListener(new LogsListener());
