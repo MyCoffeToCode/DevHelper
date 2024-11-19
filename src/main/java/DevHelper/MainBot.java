@@ -11,6 +11,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
@@ -43,7 +44,6 @@ public class MainBot extends ListenerAdapter {
         // Registra os comandos
         commandManager.registerCommand(new commandhelp());
         commandManager.registerCommand(new CodeCommand());
-        command
 
         // Adiciona os listeners
         shardManager.addEventListener(new LogsListener());
@@ -55,8 +55,8 @@ public class MainBot extends ListenerAdapter {
         shardManager.getShards().forEach(shard -> shard.updateCommands().addCommands(
                 Commands.slash("ping", "Responde com pong!"),
                 Commands.slash("help", "Mostra a lista de comandos"),
-                Commands.slash("meme", "Mostra memes aleatorios")
-        ).queue());
+                Commands.slash("meme", "Mostra memes aleatorios"),
+                Commands.slash("player", "Reproduz músicas do Youtube").addOption(OptionType.STRING, "url", "URL da musica", true).queue());
     }
 
     public static void main(String[] args) {
