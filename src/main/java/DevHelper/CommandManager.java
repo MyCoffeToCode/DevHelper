@@ -3,7 +3,6 @@ package DevHelper;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,10 +33,11 @@ public class CommandManager {
 
     /**
      * Processa um evento de interação e executa o comando correspondente.
+     *
      * @param event O evento de interação.
      */
 
-    public void handleCommand(SlashCommandInteractionEvent event) throws IOException {
+    public void handleCommand(SlashCommandInteractionEvent event){
         ICommand command = commands.get(event.getName());
         if(command != null) {
             command.execute(event);

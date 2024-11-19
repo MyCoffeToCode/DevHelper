@@ -1,6 +1,5 @@
 package DevHelper.Commands.FunCommand;
 
-import DevHelper.ICommand;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -11,19 +10,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
 
-public class MemeCommand implements ICommand {
-    @Override
-    public String getName() {
-        return "";
-    }
-
-    @Override
-    public String getDescription() {
-        return "";
-    }
-
-    @Override
-    public void execute(SlashCommandInteractionEvent event) throws IOException {
+public class MemeCommand extends ListenerAdapter {
+    public static void meme(SlashCommandInteractionEvent event) throws IOException{
         // Lê o arquivo com os memes
         FileReader reader = new FileReader("/home/arthursousa/Documentos/CodeHelper_BOT/DevHelper - 16-11-2024/src/main/java/DevHelper/Commands/FunCommand/Memes.json");
         StringBuilder content = new StringBuilder(); // Cria um StringBuilder para armazenar o conteúdo do arquivo
