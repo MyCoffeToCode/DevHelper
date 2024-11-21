@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-public class MenuInteractionListener extends ListenerAdapter {
+public class HelpInteractionListener extends ListenerAdapter {
 
     public void onStringSelectInteraction(StringSelectInteractionEvent event) {
         if(!event.getComponentId().equals("command-menu")) return;

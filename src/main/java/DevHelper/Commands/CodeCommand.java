@@ -12,7 +12,7 @@ public class CodeCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Mostra um código do bot";
+        return "Mostra o código do bot";
     }
 
     @Override
