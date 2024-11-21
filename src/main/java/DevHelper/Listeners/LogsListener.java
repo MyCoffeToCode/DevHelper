@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.guild.GuildUnbanEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -109,5 +110,18 @@ public class LogsListener extends ListenerAdapter {
 
             event.getGuild().getTextChannelById("1124423573994479737").sendMessageEmbeds(embed).queue();
         }
+    }
+
+    // Mensagem de bot iniciado
+    @Override
+    public void onReady(@NotNull ReadyEvent event) {
+        MessageEmbed embed = new EmbedBuilder()
+                .setTitle("Bot iniciado :white_check_mark:")
+                .setDescription("O DevHelper bot foi iniciado com sucesso e está pronto para ajudar você na sua jornada de programação!")
+                .setThumbnail("https://cdn.discordapp.com/attachments/1308098418975182948/1308098746558578738/Design_sem_nome_1.png?ex=673f5864&is=673e06e4&hm=417a7dbbe9e802d9f255a91aff2039045112050b1f6733c6d25d61d31a20e8b8&")
+                .setColor(0x00FF00)
+                .setTimestamp(java.time.OffsetDateTime.now().withNano(0).withSecond(0))
+                .build();
+        event.getJDA().getTextChannelById("1307752863866552380").sendMessageEmbeds(embed).queue();
     }
 }
