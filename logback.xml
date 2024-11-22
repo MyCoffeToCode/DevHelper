@@ -1,0 +1,17 @@
+<configuration>
+    <!-- Appender para saída no console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Apenas a mensagem que queremos exibir -->
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Log apenas para o root -->
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+    <!-- Configurar JDA para apenas mensagens específicas -->
+    <logger name="net.dv8tion.jda" level="off" />
+

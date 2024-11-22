@@ -23,7 +23,6 @@ public class RegisterListener extends ListenerAdapter {
 
     @Override
     public void onReady(@NotNull ReadyEvent event){
-
         /*
         *
         * @Author OyakXD
@@ -38,22 +37,34 @@ public class RegisterListener extends ListenerAdapter {
         TextChannel channel = guild.getTextChannelById("1307044379235713084");
         if(channel == null) return;
 
-        MessageEmbed embed = new EmbedBuilder()
-                .setTitle("✨ Registra-se ✨")
-                .setDescription("Olá, eu sou o DevHelper, um bot desenvolvido para ajudar vocês em suas dúvidas e problemas com programação. \n\n" +
-                        "Para começar a usar o bot, digite `!help` para ver todos os comandos disponíveis.")
-                .setColor(new Color(128,0,255))
-                .setThumbnail("https://media.discordapp.net/attachments/1308098418975182948/1308098747376336926/AlbedoBase_XL_A_minimalist_logo_design_that_represents_coding_2_1.jpg?ex=673cb564&is=673b63e4&hm=a0dcb0fbb4ecd43cc8619a37de3b267f36b4e78d65f88f31cd5065740a223d3c&=&format=webp&width=586&height=586")
-                .addField("🔧 Cargos", "Para adicionar cargos, clique nos menus abaixo.", false)
-                .addField("\uD83D\uDCBC  Stacks", "Selecione as stacks que você trabalha.", false)
-                .build();
-        channel.sendMessageEmbeds(embed)
-                .setComponents(
-                        ActionRow.of(createAreaMenu()),
-                        ActionRow.of(createStackMenu())
-                )
-                .queue();
+        // Verifica se já existe uma mensagem com o título específico no canal
+        channel.getHistory().retrievePast(50).queue(messages -> {
+            boolean messageExists = messages.stream().anyMatch(message ->
+                    message.getEmbeds().stream().anyMatch(embed ->
+                            "✨ Registra-se ✨".equals(embed.getTitle())
+                    )
+            );
 
+            if (!messageExists) {
+                // Cria e envia a mensagem, pois não foi encontrada no histórico
+                MessageEmbed embed = new EmbedBuilder()
+                        .setTitle("✨ Registra-se ✨")
+                        .setDescription("Olá, eu sou o DevHelper, um bot desenvolvido para ajudar vocês em suas dúvidas e problemas com programação. \n\n" +
+                                "Para começar a usar o bot, digite `!help` para ver todos os comandos disponíveis.")
+                        .setColor(new Color(128, 0, 255))
+                        .setThumbnail("https://media.discordapp.net/attachments/1308098418975182948/1308098747376336926/AlbedoBase_XL_A_minimalist_logo_design_that_represents_coding_2_1.jpg?ex=673cb564&is=673b63e4&hm=a0dcb0fbb4ecd43cc8619a37de3b267f36b4e78d65f88f31cd5065740a223d3c&=&format=webp&width=586&height=586")
+                        .addField("🔧 Cargos", "Para adicionar cargos, clique nos menus abaixo.", false)
+                        .addField("\uD83D\uDCBC  Stacks", "Selecione as stacks que você trabalha.", false)
+                        .build();
+
+                channel.sendMessageEmbeds(embed)
+                        .setComponents(
+                                ActionRow.of(createAreaMenu()),
+                                ActionRow.of(createStackMenu())
+                        )
+                        .queue();
+            }
+        });
     }
 
     /*
