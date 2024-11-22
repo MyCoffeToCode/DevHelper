@@ -79,8 +79,9 @@ public class RegisterListener extends ListenerAdapter {
                 .addOption("Java", "java",  "", Emoji.fromCustom("java", 1299842354190225419L, false))
                 .addOption("JavaScript", "javascript", "", Emoji.fromCustom("javascript", 1299842348469059674L, false))
                 .addOption("Python", "python", "", Emoji.fromCustom("python", 1299845020429324308L, false))
-                .addOption("C#", "csharp", "",  Emoji.fromCustom("csharp", 1299842356215943310L, false ))
-                .addOption("C++", "cpp", "", Emoji.fromCustom("cpp", 1299842357977551049L, false))
+                .addOption("C#", "c#", "",  Emoji.fromCustom("csharp", 1299842356215943310L, false ))
+                .addOption("Rust", "rust", "",Emoji.fromCustom("rust", 1299845412718379149L, false))
+                .addOption("C++", "c++", "", Emoji.fromCustom("cpp", 1299842357977551049L, false))
                 .addOption("GO", "go", "", Emoji.fromCustom("go", 1299842339761684520L, false))
                 .addOption("PHP", "php", "", Emoji.fromCustom("php", 1299842342081269862L, false))
                 .addOption("Ruby", "ruby", "", Emoji.fromCustom("ruby", 1299842369310691390L, false))
@@ -121,7 +122,7 @@ public class RegisterListener extends ListenerAdapter {
 
         // Aqui ele cria uma lista de cargos que o bot irá verificar, das duas opções de menu.
         List<String> areaRoles = List.of("front-end", "back-end", "mobile", "full-stack");
-        List<String> stackRoles = List.of("java", "javascript", "python", "csharp", "cpp", "html", "css", "go", "php", "ruby", "kotlin", "angular", "typescript", "reactjs", "nodejs");
+        List<String> stackRoles = List.of("java", "javascript", "python", "c#", "c++", "html", "css", "go", "php", "ruby", "kotlin", "angular", "typescript", "reactjs", "nodejs", "rust");
 
         // Aqui ele cria um mapa de cargos, onde ele irá verificar se o cargo existe no servidor
         Map<String, Role> roleMap = new HashMap<>();

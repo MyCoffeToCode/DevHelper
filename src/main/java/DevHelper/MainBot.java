@@ -5,6 +5,7 @@ import javax.security.auth.login.LoginException;
 import DevHelper.Commands.CodeCommand;
 import DevHelper.Commands.CommandHelp;
 import DevHelper.Commands.CommandPing;
+import DevHelper.Commands.Lavaplayer.PlayerCommand;
 import DevHelper.Listeners.RegisterListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
@@ -17,8 +18,10 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import DevHelper.Listeners.LogsListener;
 import DevHelper.Listeners.HelpInteractionListener;
+import net.dv8tion.jda.internal.utils.JDALogger;
 
 public class MainBot extends ListenerAdapter {
+
     private final Dotenv config; // Configurações do Dotenv
     private final CommandManager commandManager; // Gerenciador de comandos
     private final JDA jda; // Instância principal do bot
@@ -57,6 +60,7 @@ public class MainBot extends ListenerAdapter {
         commandManager.registerCommand(new CommandHelp());
         commandManager.registerCommand(new CodeCommand());
         commandManager.registerCommand(new CommandPing());
+        commandManager.registerCommand(new PlayerCommand());
     }
 
     private void registerListeners(JDABuilder builder) {
@@ -84,6 +88,7 @@ public class MainBot extends ListenerAdapter {
     }
 
     public static void main(String[] args) {
+        JDALogger.setFallbackLoggerEnabled(false);
         try {
             new MainBot(); // Inicializa o bot
         } catch (LoginException e) {

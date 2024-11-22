@@ -6,22 +6,27 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import java.io.IOException;
 
 import DevHelper.Commands.Lavaplayer.PlayerManager;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 public class PlayerCommand implements ICommand {
     @Override
     public String getName() {
-        return "player";
+        return "tocar";
     }
 
     @Override
     public String getDescription() {
-        return "Aqui tem informações sobre o player";
+        return "Toca uma faixa de áudio!";
     }
     // Aqui é onde você vai colocar o código que será executado quando o comando for chamado
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        String trackUrl = event.getOption("trackUrl").getAsString();
-        PlayerManager.getInstance().loadAndPlay(event.getGuild(), trackUrl);
+        OptionMapping trackUrlOption = event.getOption("trackUrl");
+        if (trackUrlOption == null) {
+            event.reply("Você precisa fornecer um URL de faixa de áudio!").setEphemeral(true).queue();
+            return;
+        }
+        PlayerManager.getInstance().loadAndPlay(event.getGuild(), trackUrlOption.getAsString());
         event.reply("Música carregada e tocando!").queue();
     }
 }
