@@ -14,6 +14,10 @@ target/
 *.env
 *.idea/discord.xml
 *.target/
+.discloud.config
+.META-INF/
+*.jar
+.DevHelper/
 
 ### Eclipse ###
 .apt_generated
@@ -39,3 +43,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/dependency-reduced-pom.xml
+/discloud.config
+/Procfile
+/DevHelper/
+/META-INF/
