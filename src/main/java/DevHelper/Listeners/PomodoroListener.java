@@ -1,10 +1,15 @@
 package DevHelper.Listeners;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.awt.*;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,26 +30,90 @@ public class PomodoroListener {
     private static final HashMap<Long, Long> pauseTimestamps = new HashMap<>();
     // Mapeia os canais e o tempo restante quando pausados
     private static final HashMap<Long, Integer> pausedDurations = new HashMap<>();
+    // Mapeia os usuários e a quantidade de tickets
+    private static final HashMap<Long, Long> userTickets = new HashMap<>();
 
 
     private static final Long ALLOWED_CHANNEL_ID = 1307044379235713084L;
 
-    public static void startPomodoro(TextChannel channel) {
-        if(channel.getIdLong() != ALLOWED_CHANNEL_ID) {
-            channel.sendMessage("⚠️ Este canal não é permitido para o método Pomodoro.").queue();
-            return;
+    public static void createPomodoroTicket(Guild guild , Member member){
+
+        String roleName = "Pomodoro Access";
+
+        Role pomodoroRole = guild.getRolesByName(roleName, true).stream().findFirst().orElse(null);
+
+        if(pomodoroRole != null){
+            assignRoleAndCreateChannel(guild, member, pomodoroRole);
         }
 
-        Timer existingTimer = activeTimers.remove(channel.getIdLong());
-        if(existingTimer != null){
-            existingTimer.cancel();
-        }
-        currentCycle = 0;
-        runPomodoroCycle(channel, WORK_DURATION, true);
     }
 
+    private static void assignRoleAndCreateChannel(Guild guild, Member member, Role role){
+
+        if(userTickets.containsKey(member.getIdLong())){
+            TextChannel existingChannel = (guild.getTextChannelById(member.getIdLong()));
+            if(existingChannel != null){
+                existingChannel.sendMessage("⚠️ Você já possui um ticket de Pomodoro ativo.").queue();
+                return;
+            }
+        }
+
+        guild.addRoleToMember(member, role).queue();
+
+        guild.createTextChannel("pomodoro-" + member.getEffectiveName())
+                .addPermissionOverride(guild.getPublicRole(), null, EnumSet.of(Permission.VIEW_CHANNEL)) // Torna Privado
+                .addPermissionOverride(member, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null) // Permissão para o usuário
+                .queue(channel -> {
+                    userTickets.put(member.getIdLong(), channel.getIdLong());
+                    channel.sendMessage("🍅 **Método Pomodoro**\n\n" +
+                            "Olá, " + member.getAsMention() + "! Este é o seu ticket de Pomodoro. Utilize os comandos `/pomodoro-start`, `/pomodoro-pause`, `/pomodoro-resume` e `/pomodoro-stop` para gerenciar o seu ciclo de Pomodoro.").queue();
+                });
+    }
+
+    public static void closePomodoroTicket(Guild guild, Member member){
+        Long channelId = userTickets.remove(member.getIdLong());
+        if(channelId != null){
+            TextChannel channel = guild.getTextChannelById(channelId);
+            if(channel != null){
+                channel.delete().queue(); // Deleta o canal
+            }
+            String roleName = "Pomodoro Access";
+
+            Role pomodoroRole = guild.getRolesByName(roleName, true).stream().findFirst().orElse(null);
+            if(pomodoroRole != null){
+                guild.removeRoleFromMember(member, pomodoroRole).queue(); // Remove o cargo
+            }
+
+            member.getUser().openPrivateChannel().queue(privateChannel -> {
+                privateChannel.sendMessage("🍅 **Método Pomodoro**\n\n" +
+                        "Seu ticket de Pomodoro foi encerrado com sucesso. Caso precise de ajuda, estou à disposição!").queue();
+            });
+
+        } else {
+            // Envia mensagem privada ao usuário
+            member.getUser().openPrivateChannel().queue(privateChannel -> {
+                privateChannel.sendMessage("⚠️ Você não possui um ticket de Pomodoro ativo.").queue();
+            });
+        }
+    }
+
+    public static void startPomodoro(TextChannel channel) {
+        if (!userTickets.containsValue(channel.getIdLong())) {
+            channel.sendMessage("⚠️ Este canal não é permitido para o método Pomodoro.").queue();
+            return;
+            }
+
+            Timer existingTimer = activeTimers.remove(channel.getIdLong());
+            if (existingTimer != null) {
+                existingTimer.cancel();
+            }
+            currentCycle = 0;
+            runPomodoroCycle(channel, WORK_DURATION, true);
+        }
+
+
     public static void stopPomodoro(TextChannel channel) {
-        if(channel.getIdLong() != ALLOWED_CHANNEL_ID) {
+        if (!userTickets.containsValue(channel.getIdLong())) {
             channel.sendMessage("⚠️ Este canal não é permitido para o método Pomodoro.").queue();
             return;
         }
@@ -58,7 +127,7 @@ public class PomodoroListener {
     }
 
     public static void pausePomodoro(TextChannel channel){
-        if(channel.getIdLong() != ALLOWED_CHANNEL_ID) {
+        if (!userTickets.containsValue(channel.getIdLong())) {
             channel.sendMessage("⚠️ Este canal não é permitido para o método Pomodoro.").queue();
             return;
         }
@@ -77,7 +146,7 @@ public class PomodoroListener {
     }
 
     public static void resumePomodoro(TextChannel channel){
-        if(channel.getIdLong() != ALLOWED_CHANNEL_ID){
+        if (!userTickets.containsValue(channel.getIdLong())) {
             channel.sendMessage("⚠️ Este canal não é permitido para o método Pomodoro.").queue();
             return;
         }

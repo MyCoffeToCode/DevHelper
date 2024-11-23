@@ -6,10 +6,8 @@ import DevHelper.Commands.CodeCommand;
 import DevHelper.Commands.CommandHelp;
 import DevHelper.Commands.CommandPing;
 import DevHelper.Commands.Lavaplayer.PlayerCommand;
-import DevHelper.Commands.StudyCommands.PomodoroPause;
-import DevHelper.Commands.StudyCommands.PomodoroResume;
-import DevHelper.Commands.StudyCommands.PomodoroStart;
-import DevHelper.Commands.StudyCommands.PomodoroStop;
+import DevHelper.Commands.StudyCommands.*;
+import DevHelper.Commands.StudyCommands.PomodoroCommands.*;
 import DevHelper.Listeners.RegisterListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
@@ -67,10 +65,15 @@ public class MainBot extends ListenerAdapter {
         commandManager.registerCommand(new PlayerCommand());
 
         // Study Commands
+        commandManager.registerCommand(new Pomodoro());
+
+        // Pomodoro Commands
         commandManager.registerCommand(new PomodoroStart());
         commandManager.registerCommand(new PomodoroPause());
         commandManager.registerCommand(new PomodoroStop());
         commandManager.registerCommand(new PomodoroResume());
+        commandManager.registerCommand(new PomodoroCreateTicket());
+        commandManager.registerCommand(new PomodoroClosedTicket());
         // ------------------------------------------------
     }
 
