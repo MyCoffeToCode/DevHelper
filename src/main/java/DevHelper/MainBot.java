@@ -5,9 +5,13 @@ import javax.security.auth.login.LoginException;
 import DevHelper.Commands.CodeCommand;
 import DevHelper.Commands.CommandHelp;
 import DevHelper.Commands.CommandPing;
+import DevHelper.Commands.FunCommands.CommandExercise.CommandExercise;
+import DevHelper.Commands.FunCommands.MemeCommands.PrintMemeCommand;
+import DevHelper.Commands.FunCommands.MemeCommands.SendMemeCommand;
 import DevHelper.Commands.Lavaplayer.PlayerCommand;
 import DevHelper.Commands.StudyCommands.*;
 import DevHelper.Commands.StudyCommands.PomodoroCommands.*;
+import DevHelper.DataBase.MemeDatabaseManager;
 import DevHelper.Listeners.RegisterListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
@@ -21,6 +25,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import DevHelper.Listeners.LogsListener;
 import DevHelper.Listeners.HelpInteractionListener;
 import net.dv8tion.jda.internal.utils.JDALogger;
+
+import java.util.List;
 
 public class MainBot extends ListenerAdapter {
 
@@ -64,6 +70,11 @@ public class MainBot extends ListenerAdapter {
         commandManager.registerCommand(new CommandPing());
         commandManager.registerCommand(new PlayerCommand());
 
+        // Fun Commands
+        commandManager.registerCommand(new PrintMemeCommand());
+        commandManager.registerCommand(new SendMemeCommand());
+        commandManager.registerCommand(new CommandExercise());
+
         // Study Commands
         commandManager.registerCommand(new Pomodoro());
 
@@ -87,6 +98,8 @@ public class MainBot extends ListenerAdapter {
         );
     }
 
+
+
     private void syncCommands() {
         // Sincroniza os comandos dinamicamente com base no CommandManager
         jda.updateCommands().addCommands(
@@ -105,6 +118,15 @@ public class MainBot extends ListenerAdapter {
         JDALogger.setFallbackLoggerEnabled(false);
         try {
             new MainBot(); // Inicializa o bot
+            DatabaseManager.initialize();
+
+            // Adiciona alguns memes ao banco de dados
+            MemeDatabaseManager.memes();
+            // Lista todos os memes do banco de dados
+            List<String> memes = DatabaseManager.listMemes();
+            System.out.println("Memes no banco de dados:");
+            memes.forEach(System.out::println);
+
         } catch (LoginException e) {
             System.out.println("ERROR: Token do bot é inválido.");
         } catch (IllegalArgumentException e) {

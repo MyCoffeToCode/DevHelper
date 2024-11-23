@@ -56,8 +56,9 @@ public class HelpInteractionListener extends ListenerAdapter {
                     .addField(":three: Iniciante", "Obtenha orientações para começar do zero na programação, incluindo explicações sobre linguagens básicas, exercícios simples e dicas práticas.", false)
                     .addField(":four: GitHub", "\n" +
                             "Confira informações sobre o Bot no repositório oficial no GitHub, incluindo o código-fonte, sugestões de melhorias e oportunidades para contribuir com novas funcionalidades.", false)
-                    .setFooter("Desenvolvido por StarCode", "https://cdn.discordapp.com/attachments/1307044379235713084/1307547647753850951/Design_sem_nome_1.png?ex=673ab424&is=673962a4&hm=48c4dab9266be43588b722fd5bda1823bac0f2617580090570c7d5d106a6162c&")
-                    .setThumbnail("https://cdn.discordapp.com/attachments/1307044379235713084/1307547647753850951/Design_sem_nome_1.png?ex=673ab424&is=673962a4&hm=48c4dab9266be43588b722fd5bda1823bac0f2617580090570c7d5d106a6162c&")
+                    .setFooter("Desenvolvido por StarCode", "https://cdn.discordapp.com/attachments/1308098418975182948/1308098746558578738/Design_sem_nome_1.png?ex=6740a9e4&is=673f5864&hm=d547c58795a35022ac9c7ced19a0b2544ec5a65d5d6065dccd35903fc5d87fdf&")
+                    .setThumbnail("https://cdn.discordapp.com/attachments/1308098418975182948/1308098746558578738/Design_sem_nome_1.png?ex=6740a9e4&is=673f5864&hm=d547c58795a35022ac9c7ced19a0b2544ec5a65d5d6065dccd35903fc5d87fdf&")
+                    .setImage("https://cdn.discordapp.com/attachments/1308098418975182948/1309343979346591846/standard_2.gif?ex=67413d1b&is=673feb9b&hm=812ae5ce71f8b9eed5460e32d3248c1f290fea705111f11053fc7182b3d413d4&")
                     .setColor(0x65D8C5)
                     .build()).queue();
             default -> event.editMessageEmbeds(new EmbedBuilder()
