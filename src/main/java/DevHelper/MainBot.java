@@ -8,7 +8,6 @@ import DevHelper.Commands.CommandPing;
 import DevHelper.Commands.FunCommands.CommandExercise.CommandExercise;
 import DevHelper.Commands.FunCommands.MemeCommands.PrintMemeCommand;
 import DevHelper.Commands.FunCommands.MemeCommands.SendMemeCommand;
-import DevHelper.Commands.Lavaplayer.PlayerCommand;
 import DevHelper.Commands.StudyCommands.*;
 import DevHelper.Commands.StudyCommands.PomodoroCommands.*;
 import DevHelper.DataBase.MemeDatabaseManager;
@@ -68,7 +67,6 @@ public class MainBot extends ListenerAdapter {
         commandManager.registerCommand(new CommandHelp());
         commandManager.registerCommand(new CodeCommand());
         commandManager.registerCommand(new CommandPing());
-        commandManager.registerCommand(new PlayerCommand());
 
         // Fun Commands
         commandManager.registerCommand(new PrintMemeCommand());

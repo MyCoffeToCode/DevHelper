@@ -14,4 +14,4 @@
 
     <!-- Configurar JDA para apenas mensagens específicas -->
     <logger name="net.dv8tion.jda" level="off" />
-
+</configuration>
