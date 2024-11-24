@@ -2,7 +2,6 @@ package DevHelper;
 
 import javax.security.auth.login.LoginException;
 
-import DevHelper.Commands.CodeCommand;
 import DevHelper.Commands.CommandHelp;
 import DevHelper.Commands.CommandPing;
 import DevHelper.Commands.FunCommands.CommandExercise.CommandExercise;
@@ -12,6 +11,7 @@ import DevHelper.Commands.StudyCommands.*;
 import DevHelper.Commands.StudyCommands.PomodoroCommands.*;
 import DevHelper.DataBase.MemeDatabaseManager;
 import DevHelper.Listeners.RegisterListener;
+import DevHelper.Listeners.RuleListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -19,6 +19,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import DevHelper.Listeners.LogsListener;
@@ -60,12 +61,14 @@ public class MainBot extends ListenerAdapter {
 
         // Sincroniza os comandos com o Discord
         syncCommands();
+
+        //
+        removeUnusedCommands();
     }
 
     private void registerCommands() {
         // Registra os comandos no CommandManager
         commandManager.registerCommand(new CommandHelp());
-        commandManager.registerCommand(new CodeCommand());
         commandManager.registerCommand(new CommandPing());
 
         // Fun Commands
@@ -92,7 +95,8 @@ public class MainBot extends ListenerAdapter {
                 this, // Registra a própria classe como Listener
                 new LogsListener(),
                 new HelpInteractionListener(),
-                new RegisterListener()
+                new RegisterListener(),
+                new RuleListener()
         );
     }
 
@@ -105,6 +109,25 @@ public class MainBot extends ListenerAdapter {
                         .map(command -> Commands.slash(command.getName(), command.getDescription()))
                         .toList()
         ).queue();
+    }
+
+    public void removeUnusedCommands(){
+
+        jda.retrieveCommands().queue(existingCommands -> {
+            for(Command command : existingCommands){
+
+                boolean isStillUsed = commandManager.getCommands().stream()
+                        .anyMatch(cmd -> cmd.getName().equals(command.getName()));
+
+
+                if(!isStillUsed){
+                    command.delete().queue(
+                            success -> System.out.println("Comando deletado: " + command.getName()),
+                            error -> System.out.println("Erro ao deletar comando: " + command.getName())
+                    );
+                }
+            }
+        });
     }
 
     @Override

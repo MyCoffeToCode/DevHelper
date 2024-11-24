@@ -34,7 +34,7 @@ public class RegisterListener extends ListenerAdapter {
         Guild guild = event.getJDA().getGuildById("1120887160288051211");
         if(guild == null) return;
 
-        TextChannel channel = guild.getTextChannelById("1307044379235713084");
+        TextChannel channel = guild.getTextChannelById("1120920260757962802");
         if(channel == null) return;
 
         // Verifica se já existe uma mensagem com o título específico no canal

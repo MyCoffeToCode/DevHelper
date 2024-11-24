@@ -17,6 +17,7 @@ public class PomodoroStop implements ICommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
+        event.reply("Pomodoro Encerrado com sucesso!").setEphemeral(true).queue();
         PomodoroListener.stopPomodoro(event.getChannel().asTextChannel());
     }
 }
