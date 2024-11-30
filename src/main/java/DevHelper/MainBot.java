@@ -9,6 +9,7 @@ import DevHelper.Commands.FunCommands.MemeCommands.PrintMemeCommand;
 import DevHelper.Commands.FunCommands.MemeCommands.SendMemeCommand;
 import DevHelper.Commands.StudyCommands.*;
 import DevHelper.Commands.StudyCommands.PomodoroCommands.*;
+import DevHelper.Commands.StudyCommands.CourseListCommands.*;
 import DevHelper.DataBase.MemeDatabaseManager;
 import DevHelper.Listeners.RegisterListener;
 import DevHelper.Listeners.RuleListener;
@@ -77,6 +78,7 @@ public class MainBot extends ListenerAdapter {
         commandManager.registerCommand(new CommandExercise());
 
         // Study Commands
+        commandManager.registerCommand(new GetCourseListCommand());
         commandManager.registerCommand(new Pomodoro());
 
         // Pomodoro Commands
