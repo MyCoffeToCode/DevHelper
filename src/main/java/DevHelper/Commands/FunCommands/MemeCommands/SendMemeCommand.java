@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 public class SendMemeCommand implements ICommand {
     @Override
     public String getName() {
-        return  "sendMeme";
+        return  "send-meme";
     }
 
     @Override
