@@ -13,14 +13,6 @@ public class DatabaseManager {
 
     public static void initialize() {
 
-        String createUsersTableSQL = """
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY,
-                discord_id TEXT NOT NULL UNIQUE,
-                username TEXT,
-                points INTEGER DEFAULT 0
-            );
-        """;
     String createMemesTableSQL = """
         CREATE TABLE IF NOT EXISTS memes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,8 +24,6 @@ public class DatabaseManager {
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
-            // Cria a tabela de usuários
-            stmt.execute(createUsersTableSQL);
 
             // Cria a tabela de memes
             stmt.execute(createMemesTableSQL);
