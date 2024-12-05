@@ -24,7 +24,6 @@ public class DatabaseManager {
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
-
             // Cria a tabela de memes
             stmt.execute(createMemesTableSQL);
             System.out.println("Banco de dados inicializado!");
@@ -35,13 +34,23 @@ public class DatabaseManager {
 
     // Adiciona um novo meme ao banco de dados
     public static void addMeme(String url, String category) {
-        String sql = "INSERT INTO memes (url, category) VALUES (?, ?)";
+        String checkSql = "SELECT COUNT(*) FROM memes WHERE url = ?";
+        String insertSql = "INSERT INTO memes (url, category) VALUES (?, ?)";
 
         try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, url);
-            pstmt.setString(2, category);
-            pstmt.executeUpdate();
+             PreparedStatement checkStmt = conn.prepareStatement((checkSql));
+             PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+
+            checkStmt.setString(1, url);
+            ResultSet rs = checkStmt.executeQuery();
+            if(rs.next() && rs.getInt(1) > 0){
+                return;
+            }
+
+            // Insere o novo meme
+            insertStmt.setString(1, url);
+            insertStmt.setString(2, category);
+            insertStmt.executeUpdate();
             System.out.println("Meme adicionado: " + url);
         } catch (SQLException e){
             System.err.println("Erro ao adicionar meme: " + e.getMessage());
