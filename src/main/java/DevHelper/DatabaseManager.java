@@ -51,6 +51,7 @@ public class DatabaseManager {
             insertStmt.setString(1, url);
             insertStmt.setString(2, category);
             insertStmt.executeUpdate();
+            System.out.println("Meme adicionado: " + url);
         } catch (SQLException e){
             System.err.println("Erro ao adicionar meme: " + e.getMessage());
         }
