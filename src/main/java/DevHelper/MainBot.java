@@ -50,7 +50,7 @@ public class MainBot extends ListenerAdapter {
 
         // Configura o bot
         JDABuilder builder = JDABuilder.createDefault(token);
-        builder.setStatus(OnlineStatus.DO_NOT_DISTURB); // Define status inicial
+        builder.setStatus(OnlineStatus.ONLINE); // Define status inicial
         builder.setActivity(Activity.playing("Digite /help")); // Atividade do bot
         builder.enableIntents(GatewayIntent.MESSAGE_CONTENT); // Permite ler o conteúdo das mensagens
 
