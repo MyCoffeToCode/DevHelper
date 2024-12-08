@@ -10,7 +10,6 @@ import DevHelper.Commands.FunCommands.MemeCommands.SendMemeCommand;
 import DevHelper.Commands.StudyCommands.*;
 import DevHelper.Commands.StudyCommands.PomodoroCommands.*;
 import DevHelper.Commands.StudyCommands.CourseListCommands.*;
-import DevHelper.DataBase.MemeDatabaseManager;
 import DevHelper.Listeners.RegisterListener;
 import DevHelper.Listeners.RuleListener;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -21,6 +20,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import DevHelper.Listeners.LogsListener;
@@ -109,6 +109,21 @@ public class MainBot extends ListenerAdapter {
         jda.updateCommands().addCommands(
                 commandManager.getCommands().stream()
                         .map(command -> Commands.slash(command.getName(), command.getDescription()))
+                        .map(command -> {
+                            if (command.getName().equals("sendmeme")) {
+                                return Commands.slash(command.getName(), command.getDescription())
+                                        .addOption(OptionType.STRING, "url", "URL do meme", true);
+                            }
+                            return Commands.slash(command.getName(), command.getDescription());
+                        })
+                        .map(command -> {
+                            if (command.getName().equals("exercise")) {
+                                return Commands.slash(command.getName(), command.getDescription())
+                                        .addOption(OptionType.STRING, "linguagem", "Escolha uma linguagem para o desafio", true)
+                                        .addOption(OptionType.STRING, "dificuldade", "Escolha a dificuldade do desafio. Dificuldades: Fácil, Médio, Difícil", true);
+                            }
+                            return Commands.slash(command.getName(), command.getDescription());
+                        })
                         .toList()
         ).queue();
     }
@@ -141,14 +156,7 @@ public class MainBot extends ListenerAdapter {
         JDALogger.setFallbackLoggerEnabled(false);
         try {
             new MainBot(); // Inicializa o bot
-            DatabaseManager.initialize();
-
-            // Adiciona alguns memes ao banco de dados
-            MemeDatabaseManager.memes();
-            // Lista todos os memes do banco de dados
-            List<String> memes = DatabaseManager.listMemes();
-            System.out.println("Memes no banco de dados:");
-            memes.forEach(System.out::println);
+            DatabaseManager.initialize(); // Inicializa o banco de dados
 
         } catch (LoginException e) {
             System.out.println("ERROR: Token do bot é inválido.");

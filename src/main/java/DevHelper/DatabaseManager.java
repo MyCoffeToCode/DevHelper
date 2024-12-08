@@ -22,10 +22,23 @@ public class DatabaseManager {
         );
     """;
 
+    String createExercisesTableSQL = """
+        CREATE TABLE IF NOT EXISTS exercises (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            exercise TEXT NOT NULL,
+            language TEXT NOT NULL,
+            difficulty TEXT NOT NULL,
+            added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """;
+
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             // Cria a tabela de memes
             stmt.execute(createMemesTableSQL);
+            // Cria a tabela de exercícios
+            stmt.execute(createExercisesTableSQL);
             System.out.println("Banco de dados inicializado!");
         } catch (SQLException e){
             System.err.println("Erro ao inicializar o banco: " + e.getMessage());
