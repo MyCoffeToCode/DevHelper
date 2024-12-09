@@ -27,9 +27,6 @@ public class CommandExercise implements ICommand {
         String linguagem = event.getOption("linguagem").getAsString().toLowerCase();
         String dificuldade = event.getOption("dificuldade").getAsString().toLowerCase();
 
-        System.out.println("Linguagem: " + linguagem);
-        System.out.println("Dificuldade: " + dificuldade);
-
         String textDifficulty = "";
 
         if (dificuldade.equalsIgnoreCase("fácil")) {
@@ -60,7 +57,7 @@ public class CommandExercise implements ICommand {
                         .addField("Dificuldade:", "``" + dificuldade + "``" + " " + textDifficulty, true)
                         .addField("Título:", title, false)
                         .addField("Exercício:\n", "```" + exercise + "```", false)
-                        .setColor(0x65D8C5)
+                        .setColor(getColorByDifficulty(dificuldade))
                         .build();
 
                 event.replyEmbeds(embed).queue();
@@ -71,6 +68,19 @@ public class CommandExercise implements ICommand {
         } catch (SQLException e) {
             event.reply("Erro ao buscar o exercício! 😢 Detalhes: " + e.getMessage()).setEphemeral(true).queue();
             e.printStackTrace();
+        }
+    }
+
+    private int getColorByDifficulty(String dificuldade) {
+        switch (dificuldade.toLowerCase()) {
+            case "fácil":
+                return 0x00FF00; // Verde
+            case "médio":
+                return 0xFFFF00; // Amarelo
+            case "difícil":
+                return 0xFF0000; // Vermelho
+            default:
+                return 0x65D8C5; // Cor padrão
         }
     }
 }
