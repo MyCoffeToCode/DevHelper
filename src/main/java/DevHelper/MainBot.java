@@ -10,8 +10,6 @@ import DevHelper.Commands.FunCommands.MemeCommands.SendMemeCommand;
 import DevHelper.Commands.StudyCommands.*;
 import DevHelper.Commands.StudyCommands.PomodoroCommands.*;
 import DevHelper.Commands.StudyCommands.CourseListCommands.*;
-import DevHelper.Listeners.RegisterListener;
-import DevHelper.Listeners.RuleListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -23,11 +21,8 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import DevHelper.Listeners.LogsListener;
 import DevHelper.Listeners.HelpInteractionListener;
 import net.dv8tion.jda.internal.utils.JDALogger;
-
-import java.util.List;
 
 public class MainBot extends ListenerAdapter {
 
@@ -95,10 +90,7 @@ public class MainBot extends ListenerAdapter {
         // Registra os listeners no builder
         builder.addEventListeners(
                 this, // Registra a própria classe como Listener
-                new LogsListener(),
-                new HelpInteractionListener(),
-                new RegisterListener(),
-                new RuleListener()
+                new HelpInteractionListener()
         );
     }
 
