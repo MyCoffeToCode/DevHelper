@@ -60,6 +60,8 @@ public class MainBot extends ListenerAdapter {
 
         //
         removeUnusedCommands();
+
+        System.out.println("[BOT] Online!");
     }
 
     private void registerCommands() {
