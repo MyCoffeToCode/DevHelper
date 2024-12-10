@@ -7,9 +7,16 @@ import DevHelper.Commands.CommandPing;
 import DevHelper.Commands.FunCommands.CommandExercise.CommandExercise;
 import DevHelper.Commands.FunCommands.MemeCommands.PrintMemeCommand;
 import DevHelper.Commands.FunCommands.MemeCommands.SendMemeCommand;
-import DevHelper.Commands.StudyCommands.*;
-import DevHelper.Commands.StudyCommands.PomodoroCommands.*;
-import DevHelper.Commands.StudyCommands.CourseListCommands.*;
+import DevHelper.Commands.StudyCommands.CourseListCommands.GetCourseListCommand;
+import DevHelper.Commands.StudyCommands.CourseListCommands.SetCourseListCommand;
+import DevHelper.Commands.StudyCommands.Pomodoro;
+import DevHelper.Commands.StudyCommands.PomodoroCommands.PomodoroClosedTicket;
+import DevHelper.Commands.StudyCommands.PomodoroCommands.PomodoroCreateTicket;
+import DevHelper.Commands.StudyCommands.PomodoroCommands.PomodoroPause;
+import DevHelper.Commands.StudyCommands.PomodoroCommands.PomodoroResume;
+import DevHelper.Commands.StudyCommands.PomodoroCommands.PomodoroStart;
+import DevHelper.Commands.StudyCommands.PomodoroCommands.PomodoroStop;
+import DevHelper.Listeners.HelpInteractionListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -21,7 +28,6 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import DevHelper.Listeners.HelpInteractionListener;
 import net.dv8tion.jda.internal.utils.JDALogger;
 
 public class MainBot extends ListenerAdapter {
@@ -76,6 +82,7 @@ public class MainBot extends ListenerAdapter {
 
         // Study Commands
         commandManager.registerCommand(new GetCourseListCommand());
+        commandManager.registerCommand(new SetCourseListCommand());
         commandManager.registerCommand(new Pomodoro());
 
         // Pomodoro Commands
@@ -115,6 +122,15 @@ public class MainBot extends ListenerAdapter {
                                 return Commands.slash(command.getName(), command.getDescription())
                                         .addOption(OptionType.STRING, "linguagem", "Escolha uma linguagem para o desafio", true)
                                         .addOption(OptionType.STRING, "dificuldade", "Escolha a dificuldade do desafio. Dificuldades: Fácil, Médio, Difícil", true);
+                            }
+                            return Commands.slash(command.getName(), command.getDescription());
+                        })
+                        .map(command -> {
+                            if (command.getName().equals("adicionar-curso")) {
+                                return Commands.slash(command.getName(), command.getDescription())
+                                        .addOption(OptionType.STRING, "título", "Defina o título do curso", true)
+                                        .addOption(OptionType.STRING, "categoria", "Defina a categoria: Programação, DevOps, Infra, Banco de Dados", true)
+                                        .addOption(OptionType.STRING, "url", "Insira a URL do curso", true);
                             }
                             return Commands.slash(command.getName(), command.getDescription());
                         })
