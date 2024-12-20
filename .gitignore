@@ -49,3 +49,6 @@ build/
 /DevHelper/
 /META-INF/
 /passwordwebhook.txt
+
+### Other Ignores ###
+BannedWords.csv
