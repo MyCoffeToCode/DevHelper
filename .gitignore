@@ -51,4 +51,3 @@ build/
 /passwordwebhook.txt
 
 ### Other Ignores ###
-BannedWords.csv
