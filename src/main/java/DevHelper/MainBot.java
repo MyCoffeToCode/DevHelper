@@ -32,17 +32,19 @@ import net.dv8tion.jda.internal.utils.JDALogger;
 
 public class MainBot extends ListenerAdapter {
 
-    private final Dotenv config; // Configurações do Dotenv
+    private Dotenv config = null; // Configurações do Dotenv
     private final CommandManager commandManager; // Gerenciador de comandos
     private final JDA jda; // Instância principal do bot
 
     public MainBot() throws LoginException {
-        // Inicializa o Dotenv e pega o token
-        this.config = Dotenv.load();
-        String token = config.get("TOKEN");
+        String token = System.getenv("DISCORD_TOKEN");
 
         if (token == null || token.isEmpty()) {
-            throw new IllegalArgumentException("ERROR: Token do bot não encontrado no arquivo .env!");
+            this.config = Dotenv.load();
+            token = config.get("TOKEN");
+            if (token == null || token.isEmpty()) {
+                    throw new IllegalArgumentException("ERROR: Token do bot não encontrado nem nas variáveis de ambiente, nem no arquivo .env!");
+            }
         }
 
         // Inicializa o CommandManager

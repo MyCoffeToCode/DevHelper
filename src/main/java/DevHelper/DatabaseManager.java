@@ -1,11 +1,13 @@
 package DevHelper;
 
+import org.slf4j.Logger;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseManager {
-    private static final String URL = "jdbc:sqlite:data/bot_database.db";
+    private static final String URL = System.getenv("URL_DB") != null && !System.getenv("URL_DB").isEmpty() ? System.getenv("URL_DB") : "jdbc:sqlite:data/bot_database.db";
 
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(URL);
@@ -40,6 +42,7 @@ public class DatabaseManager {
             // Cria a tabela de exercícios
             stmt.execute(createExercisesTableSQL);
             System.out.println("Banco de dados inicializado!");
+            System.out.println("Conectado em: " + conn.getMetaData().getURL());
         } catch (SQLException e){
             System.err.println("Erro ao inicializar o banco: " + e.getMessage());
         }
