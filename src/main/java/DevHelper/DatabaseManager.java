@@ -1,7 +1,5 @@
 package DevHelper;
 
-import org.slf4j.Logger;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
