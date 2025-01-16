@@ -13,5 +13,5 @@ services:
     volumes:
       - sqlite-data:/app/bot_database.db
     environment:
-      DISCORD_TOKEN: "SEU_TOKEN"
+      DISCORD_TOKEN: "<SEU TOKEN>"
       URL_DB: "jdbc:sqlite:app/bot_database.db"
