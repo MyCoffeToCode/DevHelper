@@ -108,27 +108,17 @@ public class MainBot extends ListenerAdapter {
 
 
     private void syncCommands() {
-        // Sincroniza os comandos dinamicamente com base no CommandManager
         jda.updateCommands().addCommands(
                 commandManager.getCommands().stream()
-                        .map(command -> Commands.slash(command.getName(), command.getDescription()))
                         .map(command -> {
-                            if (command.getName().equals("sendmeme")) {
+                            if (command.getName().equals("send-meme")) {
                                 return Commands.slash(command.getName(), command.getDescription())
                                         .addOption(OptionType.STRING, "url", "URL do meme", true);
-                            }
-                            return Commands.slash(command.getName(), command.getDescription());
-                        })
-                        .map(command -> {
-                            if (command.getName().equals("exercise")) {
+                            } else if (command.getName().equals("exercise")) {
                                 return Commands.slash(command.getName(), command.getDescription())
-                                        .addOption(OptionType.STRING, "linguagem", "Escolha uma linguagem para o desafio", true)
+                                        .addOption(OptionType.STRING, "linguagem", "Escolha uma linguagem para o desafio. Java, JS, HTML ou CSS", true)
                                         .addOption(OptionType.STRING, "dificuldade", "Escolha a dificuldade do desafio. Dificuldades: Fácil, Médio, Difícil", true);
-                            }
-                            return Commands.slash(command.getName(), command.getDescription());
-                        })
-                        .map(command -> {
-                            if (command.getName().equals("adicionar-curso")) {
+                            } else if (command.getName().equals("adicionar-curso")) {
                                 return Commands.slash(command.getName(), command.getDescription())
                                         .addOption(OptionType.STRING, "título", "Defina o título do curso", true)
                                         .addOption(OptionType.STRING, "categoria", "Defina a categoria: Programação, DevOps, Infra, Banco de Dados", true)
