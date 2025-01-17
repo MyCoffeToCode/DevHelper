@@ -32,17 +32,19 @@ import net.dv8tion.jda.internal.utils.JDALogger;
 
 public class MainBot extends ListenerAdapter {
 
-    private final Dotenv config; // Configurações do Dotenv
+    private Dotenv config = null; // Configurações do Dotenv
     private final CommandManager commandManager; // Gerenciador de comandos
     private final JDA jda; // Instância principal do bot
 
     public MainBot() throws LoginException {
-        // Inicializa o Dotenv e pega o token
-        this.config = Dotenv.load();
-        String token = config.get("TOKEN");
+        String token = System.getenv("DISCORD_TOKEN");
 
         if (token == null || token.isEmpty()) {
-            throw new IllegalArgumentException("ERROR: Token do bot não encontrado no arquivo .env!");
+            this.config = Dotenv.load();
+            token = config.get("TOKEN");
+            if (token == null || token.isEmpty()) {
+                    throw new IllegalArgumentException("ERROR: Token do bot não encontrado nem nas variáveis de ambiente, nem no arquivo .env!");
+            }
         }
 
         // Inicializa o CommandManager
@@ -106,27 +108,17 @@ public class MainBot extends ListenerAdapter {
 
 
     private void syncCommands() {
-        // Sincroniza os comandos dinamicamente com base no CommandManager
         jda.updateCommands().addCommands(
                 commandManager.getCommands().stream()
-                        .map(command -> Commands.slash(command.getName(), command.getDescription()))
                         .map(command -> {
-                            if (command.getName().equals("sendmeme")) {
+                            if (command.getName().equals("send-meme")) {
                                 return Commands.slash(command.getName(), command.getDescription())
                                         .addOption(OptionType.STRING, "url", "URL do meme", true);
-                            }
-                            return Commands.slash(command.getName(), command.getDescription());
-                        })
-                        .map(command -> {
-                            if (command.getName().equals("exercise")) {
+                            } else if (command.getName().equals("exercise")) {
                                 return Commands.slash(command.getName(), command.getDescription())
-                                        .addOption(OptionType.STRING, "linguagem", "Escolha uma linguagem para o desafio", true)
+                                        .addOption(OptionType.STRING, "linguagem", "Escolha uma linguagem para o desafio. Java, JS, HTML ou CSS", true)
                                         .addOption(OptionType.STRING, "dificuldade", "Escolha a dificuldade do desafio. Dificuldades: Fácil, Médio, Difícil", true);
-                            }
-                            return Commands.slash(command.getName(), command.getDescription());
-                        })
-                        .map(command -> {
-                            if (command.getName().equals("adicionar-curso")) {
+                            } else if (command.getName().equals("adicionar-curso")) {
                                 return Commands.slash(command.getName(), command.getDescription())
                                         .addOption(OptionType.STRING, "título", "Defina o título do curso", true)
                                         .addOption(OptionType.STRING, "categoria", "Defina a categoria: Programação, DevOps, Infra, Banco de Dados", true)
