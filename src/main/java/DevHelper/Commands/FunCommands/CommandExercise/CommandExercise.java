@@ -29,12 +29,24 @@ public class CommandExercise implements ICommand {
 
         String textDifficulty = "";
 
-        if (dificuldade.equalsIgnoreCase("fácil")) {
+        if (dificuldade.equalsIgnoreCase("fácil") || dificuldade.equalsIgnoreCase("facil")) {
             textDifficulty = ":green_square:";
-        } else if (dificuldade.equalsIgnoreCase("médio")) {
+        } else if (dificuldade.equalsIgnoreCase("médio") || dificuldade.equalsIgnoreCase("medio")) {
             textDifficulty = ":yellow_square:";
-        } else if (dificuldade.equalsIgnoreCase("difícil")) {
+        } else if (dificuldade.equalsIgnoreCase("difícil") || dificuldade.equalsIgnoreCase("dificil")) {
             textDifficulty = ":red_square:";
+        }
+
+        if (linguagem.equals("js")) {
+            linguagem = "javascript";
+        }
+
+        if (dificuldade.equals("facil")) {
+            dificuldade = "fácil";
+        } else if (dificuldade.equals("medio")) {
+            dificuldade = "médio";
+        } else if (dificuldade.equals("dificil")) {
+            dificuldade = "difícil";
         }
 
         String query = "SELECT title, exercise FROM exercises WHERE language = ? AND difficulty = ? ORDER BY RANDOM() LIMIT 1";
@@ -67,16 +79,19 @@ public class CommandExercise implements ICommand {
             }
         } catch (SQLException e) {
             event.reply("Erro ao buscar o exercício! 😢 Detalhes: " + e.getMessage()).setEphemeral(true).queue();
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
     }
 
     private int getColorByDifficulty(String dificuldade) {
         switch (dificuldade.toLowerCase()) {
             case "fácil":
-                return 0x00FF00; // Verde
+            case "facil":
+                return 0x00FF00;// Verde
+            case "medio":
             case "médio":
                 return 0xFFFF00; // Amarelo
+            case "dificil":
             case "difícil":
                 return 0xFF0000; // Vermelho
             default:
