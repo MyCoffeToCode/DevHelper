@@ -25,7 +25,7 @@ public class SetPomodoroRoleCommand implements ICommand {
     public void execute(SlashCommandInteractionEvent event) {
         Role role = Objects.requireNonNull(event.getOption("cargo")).getAsRole();
         EnumSet<Permission> permissions = role.getPermissions();
-        if (permissions.contains(Permission.MANAGE_CHANNEL)) {
+        if (permissions.contains(Permission.VIEW_CHANNEL)) {
             Config config = ConfigDAO.getConfig();
             config.setPomodoroRole(role.getId());
             boolean saved = ConfigDAO.saveConfig(config);
@@ -36,6 +36,6 @@ public class SetPomodoroRoleCommand implements ICommand {
             event.reply("Não foi possível definir o cargo por erro no banco de dados").setEphemeral(true).queue();
             return;
         }
-        event.reply("Este cargo não pode ser usado, pois não possui permissão para GERENCIAR CANAIS").setEphemeral(true).queue();
+        event.reply("Este cargo não pode ser usado, pois não possui permissão para VER CANAIS").setEphemeral(true).queue();
     }
 }
