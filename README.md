@@ -1,9 +1,8 @@
 # DevHelper - Bot Discord Java JDA
 
-[![GitHub License](https://img.shields.io/github/license/MyCoffeToCode/DevHelper)](https://github.com/MyCoffeToCode/DevHelper/blob/main/LICENSE)
+[![GitHub License](https://img.shields.io/github/license/MyCoffeToCode/DevHelper)](https://github.com/MyCoffeToCode/DevHelper/blob/master/LICENSE.md)
 [![GitHub Stars](https://img.shields.io/github/stars/MyCoffeToCode/DevHelper?style=social)](https://github.com/MyCoffeToCode/DevHelper)
 [![GitHub Forks](https://img.shields.io/github/forks/MyCoffeToCode/DevHelper?style=social)](https://github.com/MyCoffeToCode/DevHelper)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/MyCoffeToCode/DevHelper/ci.yml?branch=main)](https://github.com/MyCoffeToCode/DevHelper/actions)
 [![Java Version](https://img.shields.io/badge/Java-17-green)](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 [![JDA Version](https://img.shields.io/badge/JDA-v5.0-blue)](https://github.com/DV8FromTheWorld/JDA)
 
@@ -57,17 +56,29 @@ Clone o repositório:
 git clone https://github.com/MyCoffeToCode/DevHelper.git
 ```
 
-Entre na pasta dos arquivos docker
+Entre na pasta raiz do projeto
 
 ```bash
-cd DevHelper/docker
+cd DevHelper
 ```
 
 Crie um arquivo `.env` na raiz do projeto e adicione o token do seu bot do Discord:
 
+```bash
+cd . > .env
+```
+
+Abra o arquivo .env e coloque o conteúdo abaixo, substituindo os valores para o seu token e a seu caminho do SQLite
+
 ```env
 TOKEN=seu-token-do-bot
 URL_DB=url-do-arquivo-do-sqlite
+```
+
+Entre na pasta dos arquivos docker
+
+```bash
+cd docker
 ```
 
 execute o projeto:
@@ -96,7 +107,7 @@ Entre no nosso servidor do Discord para discussões e desenvolvimento: [Discord]
 
 ## Licença
 
-Este projeto está licenciado sob a MIT License.
+Este projeto está licenciado sob a [licença MIT](https://github.com/MyCoffeToCode/DevHelper/blob/master/LICENSE.md).
 
 Desenvolvido por **StarCode**
 
