@@ -1,5 +1,3 @@
-version: '3.8'
-
 volumes:
   sqlite-data:
     driver: local
@@ -12,6 +10,5 @@ services:
       dockerfile: ./docker/Dockerfile
     volumes:
       - sqlite-data:/app/bot_database.db
-    environment:
-      DISCORD_TOKEN: "<SEU TOKEN DO BOT>"
-      URL_DB: "jdbc:sqlite:app/bot_database.db"
+    env_file:
+      - ../.env

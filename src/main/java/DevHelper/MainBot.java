@@ -37,7 +37,7 @@ public class MainBot extends ListenerAdapter {
     private final JDA jda; // Instância principal do bot
 
     public MainBot() throws LoginException {
-        String token = System.getenv("DISCORD_TOKEN");
+        String token = System.getenv("TOKEN");
 
         if (token == null || token.isEmpty()) {
             this.config = Dotenv.load();
@@ -65,8 +65,6 @@ public class MainBot extends ListenerAdapter {
 
         // Sincroniza os comandos com o Discord
         syncCommands();
-
-        //
         removeUnusedCommands();
 
         System.out.println("[BOT] Online!");
