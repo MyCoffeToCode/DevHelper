@@ -17,6 +17,7 @@ import DevHelper.Commands.StudyCommands.PomodoroCommands.PomodoroResume;
 import DevHelper.Commands.StudyCommands.PomodoroCommands.PomodoroStart;
 import DevHelper.Commands.StudyCommands.PomodoroCommands.PomodoroStop;
 import DevHelper.Listeners.HelpInteractionListener;
+import DevHelper.Utils.ReflectionUtils;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -29,6 +30,10 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.internal.utils.JDALogger;
+import sun.reflect.ReflectionFactory;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public class MainBot extends ListenerAdapter {
 
@@ -37,15 +42,7 @@ public class MainBot extends ListenerAdapter {
     private final JDA jda; // Instância principal do bot
 
     public MainBot() throws LoginException {
-        String token = System.getenv("TOKEN");
-
-        if (token == null || token.isEmpty()) {
-            this.config = Dotenv.load();
-            token = config.get("TOKEN");
-            if (token == null || token.isEmpty()) {
-                    throw new IllegalArgumentException("ERROR: Token do bot não encontrado nem nas variáveis de ambiente, nem no arquivo .env!");
-            }
-        }
+        String token = EnvManager.getEnv("TOKEN");
 
         // Inicializa o CommandManager
         this.commandManager = new CommandManager();
@@ -71,28 +68,22 @@ public class MainBot extends ListenerAdapter {
     }
 
     private void registerCommands() {
-        // Registra os comandos no CommandManager
-        commandManager.registerCommand(new CommandHelp());
-        commandManager.registerCommand(new CommandPing());
 
-        // Fun Commands
-        commandManager.registerCommand(new PrintMemeCommand());
-        commandManager.registerCommand(new SendMemeCommand());
-        commandManager.registerCommand(new CommandExercise());
+        try {
+            List<Class<?>> classesInPackage = ReflectionUtils.getClassesInPackage("DevHelper.Commands");
 
-        // Study Commands
-        commandManager.registerCommand(new GetCourseListCommand());
-        commandManager.registerCommand(new SetCourseListCommand());
-        commandManager.registerCommand(new Pomodoro());
-
-        // Pomodoro Commands
-        commandManager.registerCommand(new PomodoroStart());
-        commandManager.registerCommand(new PomodoroPause());
-        commandManager.registerCommand(new PomodoroStop());
-        commandManager.registerCommand(new PomodoroResume());
-        commandManager.registerCommand(new PomodoroCreateTicket());
-        commandManager.registerCommand(new PomodoroClosedTicket());
-        // ------------------------------------------------
+            for (Class<?> clazz : classesInPackage) {
+                if (ICommand.class.isAssignableFrom(clazz)) {
+                    ICommand command = (ICommand) clazz.getDeclaredConstructor().newInstance();
+                    commandManager.registerCommand(command);
+                }
+            }
+            System.out.println(commandManager.getCommands().size() + " commands registered");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage());
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void registerListeners(JDABuilder builder) {
@@ -121,6 +112,9 @@ public class MainBot extends ListenerAdapter {
                                         .addOption(OptionType.STRING, "título", "Defina o título do curso", true)
                                         .addOption(OptionType.STRING, "categoria", "Defina a categoria: Programação, DevOps, Infra, Banco de Dados", true)
                                         .addOption(OptionType.STRING, "url", "Insira a URL do curso", true);
+                            } else if (command.getName().equals("setar-cargo-pomodoro")) {
+                                return Commands.slash(command.getName(), command.getDescription())
+                                        .addOption(OptionType.ROLE, "cargo", "Cargo de permissão para criar pomodoro", true);
                             }
                             return Commands.slash(command.getName(), command.getDescription());
                         })
