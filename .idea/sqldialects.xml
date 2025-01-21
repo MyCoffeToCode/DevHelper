@@ -2,5 +2,7 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/java/DevHelper/Commands/FunCommands/MemeCommands/SendMemeCommand.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/DevHelper/Config/ConfigDAO.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/DevHelper/DatabaseManager.java" dialect="GenericSQL" />
   </component>
 </project>
