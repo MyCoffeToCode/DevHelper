@@ -1,5 +1,6 @@
 package DevHelper.Listeners;
 
+import DevHelper.Config.ConfigDAO;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
@@ -36,16 +37,16 @@ public class PomodoroListener {
 
     private static final Long ALLOWED_CHANNEL_ID = 1307044379235713084L;
 
-    public static void createPomodoroTicket(Guild guild , Member member){
+    public static boolean createPomodoroTicket(Guild guild , Member member){
 
-        String roleName = "Pomodoro Access";
-
-        Role pomodoroRole = guild.getRolesByName(roleName, true).stream().findFirst().orElse(null);
+        Role pomodoroRole = guild.getRoleById(ConfigDAO.getConfig().getPomodoroRole());
 
         if(pomodoroRole != null){
             assignRoleAndCreateChannel(guild, member, pomodoroRole);
+            return true;
         }
 
+        return false;
     }
 
     private static void assignRoleAndCreateChannel(Guild guild, Member member, Role role){
@@ -77,13 +78,13 @@ public class PomodoroListener {
             if(channel != null){
                 channel.delete().queue(); // Deleta o canal
             }
-            String roleName = "Pomodoro Access";
 
-            Role pomodoroRole = guild.getRolesByName(roleName, true).stream().findFirst().orElse(null);
-            if(pomodoroRole != null){
-                guild.removeRoleFromMember(member, pomodoroRole).queue(); // Remove o cargo
+            Role pomodoroRole = guild.getRoleById(ConfigDAO.getConfig().getPomodoroRole());
+            if(pomodoroRole == null){
+                return;
             }
 
+            guild.removeRoleFromMember(member, pomodoroRole).queue(); // Remove o cargo
             member.getUser().openPrivateChannel().queue(privateChannel -> {
                 privateChannel.sendMessage("🍅 **Método Pomodoro**\n\n" +
                         "Seu ticket de Pomodoro foi encerrado com sucesso. Caso precise de ajuda, estou à disposição!").queue();

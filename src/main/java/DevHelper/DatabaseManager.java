@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseManager {
-    private static final String URL = System.getenv("URL_DB") != null && !System.getenv("URL_DB").isEmpty() ? System.getenv("URL_DB") : "jdbc:sqlite:data/bot_database.db";
+    private static final String URL = EnvManager.getEnv("URL_DB");
 
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(URL);
@@ -33,12 +33,22 @@ public class DatabaseManager {
         );
     """;
 
+    String createConfigTableSQL = """
+        CREATE TABLE IF NOT EXISTS config (
+            id INTEGER PRIMARY KEY CHECK (id = 1),
+            pomodoro_role TEXT,
+            admin_role TEXT
+        );
+    """;
+
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             // Cria a tabela de memes
             stmt.execute(createMemesTableSQL);
             // Cria a tabela de exercícios
             stmt.execute(createExercisesTableSQL);
+            // Cria a tabela de config
+            stmt.execute(createConfigTableSQL);
             System.out.println("Banco de dados inicializado!");
             System.out.println("Conectado em: " + conn.getMetaData().getURL());
         } catch (SQLException e){

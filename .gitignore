@@ -19,6 +19,7 @@ data/bot_database.db
 .META-INF/
 *.jar
 .DevHelper/
+data/*
 
 ### Eclipse ###
 .apt_generated
